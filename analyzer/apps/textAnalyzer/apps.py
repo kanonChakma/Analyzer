@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class AccountsConfig(AppConfig):
+class TextanalyzerConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "accounts"
+    name = "analyzer.apps.textAnalyzer"
