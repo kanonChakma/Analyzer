@@ -21,6 +21,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "analyzer.apps.accounts",
+    "analyzer.apps.core",
+    "analyzer.apps.textAnalyzer",
 ]
 
 MIDDLEWARE = [
@@ -33,7 +36,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "Analyzer.urls"
+ROOT_URLCONF = "analyzer.urls"
 
 TEMPLATES = [
     {
@@ -51,7 +54,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "Analyzer.wsgi.application"
+WSGI_APPLICATION = "analyzer.wsgi.application"
 
 
 DATABASES = {
@@ -94,3 +97,5 @@ STATIC_URL = "static/"
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_USER_MODEL = "accounts.CustomUser"
