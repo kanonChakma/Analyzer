@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     "analyzer.apps.accounts",
     "analyzer.apps.core",
     "analyzer.apps.textAnalyzer",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
