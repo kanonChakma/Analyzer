@@ -1,38 +1,30 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from transformers import pipeline
-
-# class SentimentAnalysisViewOne(APIView):
-#     def post(self, request):
-#         text = request.data.get("text")
-#         if not text:
-#             return Response({"error": "Text parameter is required."}, status=400)
-
-#         try:
-#             model = SetFitModel.from_pretrained("StatsGary/setfit-ft-sentinent-eval")
-#             predictions = model([text])
-#             sentiment = predictions[0]
-#             return Response({"sentiment": sentiment})
-
-#         except Exception as e:
-#             return Response({"error": str(e)}, status=500)
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
 
 class SentimentAnalysisView(APIView):
     def post(self, request):
         text = request.data.get("text")
         if not text:
-            return Response({"error": "Text parameter is required."}, status=400)
+            return Response({"error": "text is required!!!!"}, status=400)
 
         try:
             model_name = "StatsGary/setfit-ft-sentinent-eval"
-            sentiment_analyzer = pipeline("sentiment-analysis", model=model_name)
-            result = sentiment_analyzer(text)[0]
-            sentiment_label = result["label"]
-            sentiment_score = result["score"]
+            model = AutoModelForSequenceClassification.from_pretrained(model_name)
+            tokenizer = AutoTokenizer.from_pretrained(model_name)
 
-            response_data = {"sentiment": sentiment_label, "score": sentiment_score}
+            # Tokenize
+            inputs = tokenizer.encode_plus(text, add_special_tokens=True, return_tensors="pt")
 
+            # Perform sentiment analysis
+            outputs = model(**inputs)
+            predicted_label = outputs.logits.argmax(dim=1).item()
+
+            sentiment_map = {0: "negative", 1: "neutral", 2: "positive"}
+            sentiment = sentiment_map.get(predicted_label, "")
+
+            response_data = {"sentiment": sentiment}
             return Response(response_data)
 
         except Exception as e:
